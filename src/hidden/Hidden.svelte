@@ -123,7 +123,7 @@ try {
 })();`);
 
   onMount(() => {
-    if (window.location.hash && window.location.hash !== "#/hidden") {
+    if (window.location.hash && window.location.hash !== "/hidden") {
       hiddenUrlText = `https://jstrieb.github.io/link-lock/${window.location.hash}`;
     }
   });

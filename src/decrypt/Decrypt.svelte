@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { apiVersions, decoder } from "../api";
+  import { p, route } from "../router";
 
   let urlText = $state("");
   let password = $state("");
@@ -11,8 +12,8 @@
   let copyAlertOpacity = $state(0);
 
   onMount(() => {
-    if (window.location.hash && window.location.hash !== "#/decrypt") {
-      urlText = `${window.location.origin}${window.location.hash}`;
+    if (route.hash.length > 0) {
+      urlText = window.location.origin + p("/", { hash: route.hash });
     }
   });
 
@@ -27,14 +28,18 @@
       url = new URL(urlText);
     } catch {
       error(
-        'Entered text is not a valid URL. Make sure it includes "https://" too!'
+        'Entered text is not a valid URL. Make sure it includes "https://" too!',
       );
       return;
     }
 
     let params;
     try {
-      params = JSON.parse(decoder.decode(Uint8Array.fromBase64(url.hash.slice(1), { alphabet: "base64url" })));
+      params = JSON.parse(
+        decoder.decode(
+          Uint8Array.fromBase64(url.hash.slice(1), { alphabet: "base64url" }),
+        ),
+      );
     } catch {
       error("The link appears corrupted.");
       return;
@@ -42,7 +47,7 @@
 
     if (!("v" in params && "e" in params)) {
       error(
-        "The link appears corrupted. The encoded URL is missing necessary parameters."
+        "The link appears corrupted. The encoded URL is missing necessary parameters.",
       );
       return;
     }
@@ -130,14 +135,15 @@
     target="_blank">Link Lock</a
   >
   URLs without automatically redirecting. This is useful if you do not trust the
-  source of an encrypted URL. It is also useful if the URL uses a blocked
-  protocol like <code>javascript:</code>, for example.
+  source of an encrypted URL. It is also useful if the URL uses a blocked protocol
+  like <code>javascript:</code>, for example.
 </p>
 
 <p>
   This page is also useful if you think you have received a locked link, but it
   uses another domain, instead of <code>jstrieb.github.io</code>. This may be
-  done as a means to <a
+  done as a means to
+  <a
     target="_blank"
     href="https://github.com/jstrieb/link-lock/#evading-censorship"
     >evade censorship</a

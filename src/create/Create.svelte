@@ -1,5 +1,6 @@
 <script lang="ts">
   import { LATEST_API_VERSION, apiVersions, encoder } from "../api";
+    import { p } from '../router';
 
   let url = $state("");
   let hint = $state("");
@@ -101,7 +102,7 @@
     }
 
     const encrypted = await generateFragment();
-    outputUrl = `${window.location.origin}#${encrypted}`;
+    outputUrl = window.location.origin + p('/', { hash: encrypted });
 
     // Scroll to the bottom so the user sees where the bookmark was created
     setTimeout(() => {
@@ -319,7 +320,7 @@
   <label for="output">output</label>
   <input type="text" id="output" readonly bind:value={outputUrl} />
   <button id="copy" onclick={onCopy}>Copy</button>
-  <a href="#/hidden" id="bookmark" target="_blank"
+  <a href="/hidden" id="bookmark" target="_blank"
     ><button>Create Hidden Bookmark</button></a
   >
   <a href={outputUrl || "#"} id="open" target="_blank"
