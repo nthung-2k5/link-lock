@@ -1,6 +1,6 @@
 <script>
-	import { Router } from 'sv-router';
-	import './router';
+	import { Router } from "sv-router";
+	import "./router";
 </script>
 
-<Router base="link-lock" />
+<Router base={import.meta.env.BASE_URL} />

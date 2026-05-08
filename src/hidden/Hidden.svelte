@@ -152,10 +152,12 @@ try {
 
     let hash = hiddenUrl.hash.slice(1);
     try {
-      let _ = JSON.parse(decoder.decode(Uint8Array.fromBase64(hash, { alphabet: "base64url" })));
+      let _ = JSON.parse(
+        decoder.decode(Uint8Array.fromBase64(hash, { alphabet: "base64url" })),
+      );
     } catch {
       error(
-        'The hidden URL appears corrupted. It must be a password-protected Link Lock URL. <a href="https://jstrieb.github.io/link-lock">Click here to add a password.</a>'
+        'The hidden URL appears corrupted. It must be a password-protected Link Lock URL. <a href="https://jstrieb.github.io/link-lock">Click here to add a password.</a>',
       );
       return;
     }
@@ -185,7 +187,7 @@ try {
           "&grnnamespace=0" +
           "&prop=info" +
           "&inprop=url" +
-          "&origin=*"
+          "&origin=*",
       )
         .then((r) => r.json())
         .then((d) => {
@@ -270,9 +272,10 @@ try {
 
     <ul>
       <li style="margin-bottom: 0.5em;">
-        Clicking the decrypt bookmark goes to <code>{decryptBookmarkDisguise}</code> unless the
-        current page is a disguised link. Use the "advanced" options to have it
-        go somewhere else instead.
+        Clicking the decrypt bookmark goes to <code
+          >{decryptBookmarkDisguise}</code
+        > unless the current page is a disguised link. Use the "advanced" options
+        to have it go somewhere else instead.
       </li>
     </ul>
 
