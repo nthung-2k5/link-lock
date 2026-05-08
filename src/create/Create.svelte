@@ -104,7 +104,7 @@
     }
 
     const encrypted = await generateFragment();
-    outputUrl = window.location.origin + p("/", { hash: encrypted });
+    outputUrl = window.location.origin + p("/:id", { params: { id: encrypted } });
 
     // Scroll to the bottom so the user sees where the bookmark was created
     setTimeout(() => {

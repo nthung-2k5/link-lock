@@ -3,6 +3,6 @@ import Main from './Main.svelte';
 import Create from './create/Create.svelte';
 
 export const { p, navigate, isActive, route } = createRouter({
-    '/': Main,
     '/kaizo': Create,
+    '/:id': Main,
 });
