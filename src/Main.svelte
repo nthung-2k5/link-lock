@@ -13,7 +13,8 @@
       isHashPresent = true;
       tryLoadHash();
     } else {
-      navigate("/create", { replace: true });
+      isHashPresent = true;
+      error("Không tìm thấy liên kết. Vui lòng tạo một liên kết mới.");
     }
   });
 
@@ -39,19 +40,19 @@
         ),
       );
     } catch {
-      error("The link appears corrupted.");
+      error("Liên kết có vẻ bị hỏng.");
       return;
     }
 
     if (!("v" in params && "e" in params)) {
       error(
-        "The link appears corrupted. The encoded URL is missing necessary parameters.",
+        "Liên kết bị hỏng. URL mã hóa thiếu các thông số cần thiết.",
       );
       return;
     }
 
     if (!(params["v"] in apiVersions)) {
-      error("Unsupported API version. The link may be corrupted.");
+      error("Phiên bản API không được hỗ trợ. Liên kết có thể bị hỏng.");
       return;
     }
 
@@ -62,7 +63,7 @@
       saltData = "s" in params ? Uint8Array.fromBase64(params["s"]) : null;
       ivData = "i" in params ? Uint8Array.fromBase64(params["i"]) : null;
     } catch {
-      error("The link appears corrupted.");
+      error("Liên kết có vẻ bị hỏng.");
       return;
     }
 
@@ -78,7 +79,11 @@
   function retry() {
     errorText = "";
     password = "";
-    tryLoadHash();
+    if (route.hash) {
+      tryLoadHash();
+    } else {
+      error("Không tìm thấy liên kết. Vui lòng tạo một liên kết mới.");
+    }
   }
 
   async function unlock() {
@@ -88,7 +93,7 @@
     try {
       url = await api.decrypt(encryptedData, password, saltData, ivData);
     } catch {
-      error("Password is incorrect.");
+      error("Mật khẩu không chính xác.");
       return;
     }
 
@@ -103,79 +108,51 @@
         )
       ) {
         error(
-          `The link uses a non-hypertext protocol, which is not allowed. ` +
-            `The URL begins with "${urlObj.protocol}" and may be malicious.`,
+          `Liên kết sử dụng một giao thức phi siêu văn bản không được phép. ` +
+            `URL bắt đầu với "${urlObj.protocol}" và có thể độc hại.`,
         );
         return;
       }
 
       window.location.replace(url);
     } catch {
-      error("A corrupted URL was encrypted. Cannot redirect.");
+      error("Một URL bị hỏng đã được mã hóa. Không thể chuyển hướng.");
       console.log(url);
       return;
     }
   }
 </script>
 
-<noscript>
-  <div class="red-border">
-    <p>
-      If you are seeing this, it means that you have JavaScript disabled. Please
-      enable JavaScript to access the locked link.
-    </p>
-
-    <p>
-      This application is entirely programmed in JavaScript. This was done
-      intentionally, so that all encryption and decryption happens client-side.
-      This means the code runs as a distributed application, relying only on
-      GitHub Pages for infrastructure. It also means that no data about locked
-      links is ever stored on a server. The code is designed to be auditable so
-      users can investigate what is happening behind the scenes.
-    </p>
-
-    <p>
-      If you still want to run the application, I encourage you to clone the <a
-        href="https://github.com/jstrieb/link-lock">source code on GitHub</a
-      >. That way you can disable JavaScript only for trusted files on your
-      local machine.
-    </p>
-  </div>
-</noscript>
-
 {#if isHashPresent}
+  <img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
   {#if !errorText}
-    <div class="form">
-      <p>Please enter the password to unlock the link.</p>
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+      <p class="text-slate-600 mb-4 text-center">Vui lòng nhập mật khẩu để mở khóa liên kết.</p>
       {#if hint}
-        <p id="hint">Hint: {hint}</p>
+        <p id="hint" class="text-center italic text-sky-600 bg-sky-50 py-2 px-4 rounded-lg mb-6">Gợi ý: {hint}</p>
       {/if}
 
-      <hr />
+      <hr class="border-t border-slate-200 my-6" />
 
-      <label for="password">password</label>
+      <label for="password" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">mật khẩu</label>
       <input
         type="password"
         id="password"
         bind:value={password}
         onkeypress={(e) => e.key === "Enter" && unlock()}
+        class="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
         autofocus
       />
-      <button onclick={unlock}>Unlock link</button>
+      <button onclick={unlock} class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">Mở khóa liên kết</button>
     </div>
   {:else}
-    <div class="error red-border">
-      <p>Error: {errorText}</p>
-      <button onclick={retry}>Try again</button>
-      <a href="/create"><button>Lock a link</button></a>
-      <a
-        href={p("/decrypt", { hash: route.hash })}
-        id="no-redirect"
-        target="_blank"><button>Decrypt without redirect</button></a
-      >
-      <a href="/hidden" id="hidden" target="_blank"
-        ><button>Create hidden bookmark</button></a
-      >
+    <div class="bg-white border border-red-200 rounded-2xl p-8 shadow-sm">
+      <p class="text-red-500 text-center font-medium mb-6">Lỗi: {errorText}</p>
+      <div class="flex flex-col gap-3">
+        {#if route.hash}
+          <button onclick={retry} class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">Thử lại</button>
+        {/if}
+      </div>
     </div>
   {/if}
 {/if}

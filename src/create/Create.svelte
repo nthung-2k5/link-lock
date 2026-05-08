@@ -3,9 +3,9 @@
   import { p } from "../router";
 
   let url = $state("");
-  let hint = $state("");
-  let password = $state("");
-  let confirmPassword = $state("");
+  let hint = $state("aow.vn");
+  let password = $state("aow.vn");
+  let confirmPassword = $state("aow.vn");
   let useRandomIv = $state(true);
   let useRandomSalt = $state(true);
 
@@ -34,7 +34,7 @@
       urlObj = new URL(url);
     } catch {
       urlInput.setCustomValidity(
-        "URL invalid. Make sure to include 'http://' or 'https://' at the beginning.",
+        "URL không hợp lệ. Đảm bảo bao gồm 'http://' hoặc 'https://' ở đầu.",
       );
       urlInput.reportValidity();
       return false;
@@ -48,11 +48,9 @@
       )
     ) {
       urlInput.setCustomValidity(
-        "The link uses a non-hypertext protocol, which is " +
-          "not allowed. The URL begins with " +
+        "Liên kết sử dụng giao thức phi siêu văn bản không được phép. URL bắt đầu với " +
           urlObj.protocol +
-          " and may be " +
-          "malicious.",
+          " và có thể độc hại.",
       );
       urlInput.reportValidity();
       return false;
@@ -100,7 +98,7 @@
     }
 
     if (password != confirmPassword) {
-      confirmPasswordInput.setCustomValidity("Passwords do not match");
+      confirmPasswordInput.setCustomValidity("Mật khẩu không khớp");
       confirmPasswordInput.reportValidity();
       return;
     }
@@ -122,7 +120,7 @@
 
   function onCopy() {
     navigator.clipboard.writeText(outputUrl).then(() => {
-      copyAlertText = `Copied ${outputUrl.length} characters`;
+      copyAlertText = `Đã sao chép ${outputUrl.length} ký tự`;
       copyAlert = true;
       setTimeout(() => {
         copyAlert = false;
@@ -134,7 +132,7 @@
     const target = e.target as HTMLInputElement;
     if (!target.checked) {
       const confirmed = confirm(
-        'Please only disable initialization vector randomization if you know what you are doing. Disabling this is detrimental to the security of your encrypted link, and it only saves 20-25 characters in the URL length.\n\nPress "Cancel" unless you are very sure you know what you are doing.',
+        'Vui lòng chỉ vô hiệu hóa việc tạo ngẫu nhiên vector khởi tạo (IV) nếu bạn biết mình đang làm gì. Vô hiệu hóa tính năng này sẽ làm giảm tính bảo mật của liên kết mã hóa, và nó chỉ tiết kiệm được 20-25 ký tự trong độ dài URL.\n\nNhấn "Hủy" trừ khi bạn rất chắc chắn về việc mình đang làm.',
       );
       if (!confirmed) {
         target.checked = true;
@@ -145,112 +143,23 @@
 </script>
 
 <svelte:head>
-  <title>Link Lock - Password-protect links</title>
+  <title>AowVN Kaizo</title>
 </svelte:head>
 
-<!-- View on GitHub ribbon -->
-<a href="https://github.com/jstrieb/link-lock" target="_blank">
-  <!-- Use public folder path for image -->
-  <img class="ribbon" src="/corner-ribbon-minified.svg" alt="View on GitHub" />
-</a>
-
-<noscript>
-  <div class="red-border">
-    <p>
-      If you are seeing this, it means that you have JavaScript disabled. As a
-      result, the application will not work properly for you. For example, none
-      of the buttons will work.
-    </p>
-
-    <p>
-      This application is entirely programmed in JavaScript. This was done
-      intentionally, so that all encryption and decryption happens client-side.
-      This means the code runs as a distributed application, relying only on
-      GitHub Pages for infrastructure. It also means that no data about locked
-      links is ever stored on a server. The code is designed to be auditable so
-      users can investigate what is happening behind the scenes.
-    </p>
-
-    <p>
-      If you still want to run the application, I encourage you to clone the <a
-        href="https://github.com/jstrieb/link-lock">source code on GitHub</a
-      >. That way you can disable JavaScript only for trusted files on your
-      local machine.
-    </p>
-  </div>
-</noscript>
+<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 
 {#if errorText}
-  <!-- Display errors in a big red box -->
-  <div class="error red-border">
-    <p id="errortext">Error: {errorText}</p>
-    <button onclick={retry}>Try again</button>
+  <div class="bg-white border border-red-200 rounded-2xl p-6 shadow-sm mb-6">
+    <p id="errortext" class="text-red-500 text-center font-medium mb-4">Lỗi: {errorText}</p>
+    <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all" onclick={retry}>Thử lại</button>
   </div>
 {/if}
 
-<!-- Project description -->
-<h1>Link Lock</h1>
-<div>
-  <p>
-    Link Lock is a tool for adding a password to a link; in other words, for
-    encrypting and decrypting URLs. When a user visits an encrypted URL, they
-    will be prompted for a password. If the password is correct, Link Lock sends
-    them to the hidden website. Otherwise, an error is displayed. Users can also
-    add hints to remind them of the password.
-  </p>
-  <p>
-    Each encrypted URL is stored entirely within the link generated by this
-    application. As a result, users control all the data they create with Link
-    Lock. Nothing is ever stored on a server, and there are no cookies,
-    tracking, or signups. View <a
-      target="_blank"
-      href="https://github.com/jstrieb/link-lock">on GitHub</a
-    > for more information, including translated versions.
-  </p>
-  <p>Link Lock has many uses, for example:</p>
-  <ul>
-    <li>
-      <a
-        target="_blank"
-        href="https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiU1ZBemc0NUVoeXJMR1hXYmRUMXpLSFFIa0hiR2F3SzlMaWZzWW5SL0ZiaGp1cnZqMGg5VTE0bG9kVGs3S3B0TjdhcjZ2T3FvRjJLNkxMcDByL05PZE5nUTJ3UlhVOWM2RmFJdXNGajdrNkFkTC82OVJ6dmlFV2R0dWVacFM1dS9SN2w4L3Mzc1pMTVJNeHdhTVhVenYxTjZUVkdWTGloaXc3ZXlGY093Nkp2ZVN3aGl0OW9XWW84Yk9CMkpkTTF4ZnFRSGExbEoiLCJoIjoi8J+lkSIsImkiOiI5L3pmdHFmeHdoWFh4bDc4In0="
-        >Store private bookmarks on a shared computer</a
-      > - Password: avocado
-    </li>
-    <li>Add a password to shared Dropbox or Google Drive links</li>
-    <li>
-      <a
-        target="_blank"
-        href="https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiZEx3Yi9CNitlK0ZjM1B3ZURrbUY2NjdQWFlIV1dsS3dpclhvZmkvRXBFTXU0ZERlVkJuSmUrN1loS2JxQ3RrPSIsImgiOiIxICsgMSA9ID8iLCJpIjoiRDJYd1MyK1EzaHpuUDV1NyJ9"
-        >Implement simple CAPTCHAs</a
-      >
-    </li>
-    <li>
-      <a
-        target="_blank"
-        href="https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWWhjbG0xeE9uZTJWU2tvc3N1WERwKytyN1lscW1nMVNNemRoSUVER2xVZVBTUFZ3MFA3WTVwQXdnVFVKZkt4WHJ4Nlg1KytCU09RNlVTTlI3M244VEdTeWJGMmJFTG5wc0x6WVRtZnQ3aDFZSzJ5VW16TEpBTk5VOThqZFMvTVFNUG93cWdoRjVUVnYyRWF1VkVHVVlJeE5iT3BtaldCNWJyMWpXemMyakJTNUxZVGVSajNTbVI5UWNwWlRWWmVrbit4Rzd3VzNIcEttRTdVRWNtbkhZS2dydGVmaHp5eTJGNVd6N1NKSm55OTJPWnJUOEFHUE9XY3JUbmxYV0NsTDB5QjVsQmZnUTJkcHk4Y3RmMHNvdVlvb1l2LzQ1U3krZUNtdHl2WkVDd25IeUhwUForamxsaDhuNUV5U2N1ZVRWTmRtRmlmOFBhM0FtdUpQOTdTYWZXbzNwbUo4cU40UFYvMllQbHlwSGFtTmI1dnBBQkc2cU1yUWlLMVp3WHBUSnF4OG9NNFdVVGh3L3B5S0QzOWRNNml2RlNzQzVRUWpaVHl0ODlSNDNVOVdkRDVMWHprdlZ1bVpNSmM2WDExTkI4V0ZSKzdyOGVvVU8wR21rRkxTU0JlaDJickt3bzkwWjRlZkJHTkZiYWE2dU9SWnQzSm1YU0NSSGZyclVRQ053cU96R2pCKzBYZHJFeC9NbHd3QkFKNTIvY0EraW9IUDk5RkszUDN1MlN6Sk1uQzVVSFg1NGNDd1Z2dWdiMzAvUmNsMjZvZzFxUDU0NWJlMGFiak9wYnZ5aFp6RjhkdDNUUjJFLzBMY2dUQUg4dE5wSVAyYzJoM2d4NlJEQUNTZ25LRzlteW4xdFU4Y0IwbWMrd1NPdkxIRlVXVXhIYnpGSkR0aS9MSDg1RDFvdVRNWTFjM3BsSSsxRFFROG5lbjVrR2hmRUhELzdsSFhIY1ZWTHNCbi9HOTFJZU02T2pTeS9aZFcySGZ4d050VzR2WEE3em1FdjhYRDNHL3M2ZTVqdVdQWjV3ck5JWFdzcDVROHdUSlI3U2JQUi94VDNwUUZncW9LaDF2OXVEWGZBaE5xYStXaElzNTlaR1UzdFlkRVFOZEVLdGpIcnF1bzJkcVpuNnB4eTU1ZDJiOVBrcFRLNGh5TEtDOEc1TmN3TEE3dUIzYTNlNlZ2NjVVVHcrdS9oWTBoMy9Nb3ZJaERmT3k2aGZiN2FQaEIyMStxSGZSeWt2VlFPUFZrbE41ak5EK1hKZURialgvd0NUWXJJVm0yOFZkTHppZURob2ZpRGpJRjdyakFQNlF6dWJjaGJYRGFtbFZQWUhOaGVNMWdTeGROSGw5a1lRVE5kbjA1WlcvbVhXNkQwbHk0VkwrOHRwZzdxQjU2YTRyL3lIWHA0Q0tSUkdIaEVWQUptbmh2ZnBaWE11QWdneGVoSkRibVdVKy9VMUgwM2JicUZub2h5R0VGRUxQV2JjZ05kdDJwWU1Cdy81TVNqSkdWWWRPQk5nTUsxbHA2ZVRxRGhwTVdJT2E4a1dSYWx3RzV1bDhuQjhnUVBkcXBCYVdxc3I3V242SVZoZHdLc0FvTGtsdTlnL0JoelNlZEQxRjcyblprN2tSS2l3a3BJbVhOeW9TQk1SSFJSMURjSm9qdU1ZVWlrZ2JxM0dpR2ZqNmMwTTBlU2lyMlhJRnRCTzd2VkJyRmpZL1pvVnJBQ1kwTzJ2UVlGcHovaEprNElKN0daOUpmc3U4ajl5Umc5S3IrNFU3MFhoZHRLY1VYeEtrbCt1VDBtN1owb2puR0xWOGRtampzTVdna3ZhV0FYNkJpK3cycVJKYnVYRW5yUEN5dUZGODhiZ2k3UDNYUVhOMHZTY3h2Uk4wVktKQ1MvR2RVWTJsZ0lDSXVBWFlUVE9KTGNsRkJPQWxialRmZThoTG5saTkzQm4xcnZOamhnM0Y2UkJ2N3NQOTlzODlGT3pwcEZHeHVKS1RhNEg4Y2NSRmxMWDBWbE9kR0RhNWM0NGVTdzh5dCsxWWJndDlvMlExcWNSYVZsaVdadSs5VjdxM1pqcWIxcDdKb2FUN0pDQ1U2ZXR6b0dJWjBQT1JqL3pVNUlVQkRjYXdHZWszZ0djSDBLdDcxa1NSN0F2TWRYeTR3WVI4ZmdTTlpoR3gwSTZYczZ5Vy9oWFB1WERPRjNHTVBTRFFmNGNhUjBuc3pmYTl3MXdGMzVSYktodEVkZnIwU0NLQzhIRXFzNWdsQ0M4RmIxN04wbGtBVlFwSWFRRGJrN254TjVINEFhQ3RKbU5JNHFYUDhocUV6aVhySGhhZWNzNkVBUDBvdjg2cWp4dz09IiwiaCI6InVybHBhZ2U1IiwiaSI6InJNZ2xiSEpzK3pSL2dteFAifQ=="
-        >Encrypt entire pages</a
-      >
-      (via
-      <a target="_blank" href="https://github.com/jstrieb/urlpages">URL Pages</a
-      >) - Password: urlpage5
-    </li>
-    <li>Post private links on public websites</li>
-    <li>
-      <a
-        target="_blank"
-        href="https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoieVJqZnVGdlJETGFTdk4vRVYzUlg3OG9GZHRlWW81U04wcFlvSkFScFRaeXFwZTVoV1lESjFBeDVWRUswMDBNUlQ2ZVAwZ2tCTmlyaVdrYnNsVFdrZTNtNVVOVnoxSW43Z3BST1hQZDhsVmVDTkpJZi81Wm1PWFdzSDZ6dVJmdkVrald0UTRndkZBUE9VSm9id00rdnhtWGtuZW5TZ0pHeW9mMjg3L01pTERDN085NFoxTUwrMzlaNUkwdCtsaW1CaDFaNElWZ1p1QkpQUURvM2NodWZXemdTNU05Zk1FOFlxNXVUV1ZoZjVLV2VaTUR1Q0VWSmN2TjRXbDByZHl6MFpBPT0iLCJoIjoiXG5QYXNzd29yZDogdG9ycmVudGluZ19pcy1sZWdhbCEiLCJpIjoiUlIvNnJtRFhzb1lGblhiOSJ9"
-        >Share password-protected torrents and magnet links</a
-      > - Password: torrenting_is-legal!
-    </li>
-  </ul>
-</div>
+<h1 class="text-3xl font-bold text-slate-900 text-center mb-6">AowVN Kaizo</h1>
 
-<hr />
-
-<!-- Main form -->
-<div class="form">
-  <div class="labeled-input">
-    <label for="url">secret link</label>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <div class="mb-5">
+    <label for="url" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">liên kết bí mật</label>
     <input
       type="url"
       id="url"
@@ -261,7 +170,7 @@
         const target = e.target as HTMLInputElement;
         if (!target.validity.customError)
           target.setCustomValidity(
-            "Please enter a valid URL. Make sure to include 'http://' or 'https://' at the beginning.",
+            "Vui lòng nhập một URL hợp lệ. Đảm bảo bao gồm 'http://' hoặc 'https://' ở đầu.",
           );
       }}
       oninput={(e) => {
@@ -269,19 +178,20 @@
         target.setCustomValidity("");
       }}
       required
+      class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
     />
   </div>
-  <div class="labeled-input hint">
-    <label for="hint">hint (optional)</label>
-    <textarea id="hint" rows="1" bind:value={hint}></textarea>
+  <div class="mb-5">
+    <label for="hint" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">gợi ý (tùy chọn)</label>
+    <textarea id="hint" rows="1" bind:value={hint} class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-y min-h-[50px]"></textarea>
   </div>
-  <div class="split-row">
-    <div class="labeled-input password">
-      <label for="password">password</label>
-      <input type="password" id="password" bind:value={password} />
+  <div class="flex flex-col sm:flex-row gap-5 mb-6">
+    <div class="flex-1">
+      <label for="password" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">mật khẩu</label>
+      <input type="password" id="password" bind:value={password} class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
     </div>
-    <div class="labeled-input confirm-password">
-      <label for="confirm-password">confirm password</label>
+    <div class="flex-1">
+      <label for="confirm-password" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">xác nhận mật khẩu</label>
       <input
         type="password"
         id="confirm-password"
@@ -291,61 +201,49 @@
           const target = e.target as HTMLInputElement;
           target.setCustomValidity("");
         }}
+        class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
       />
     </div>
   </div>
 
-  <!-- Advanced options (JavaScript-activated dropdown) -->
-  <details>
-    <summary id="advanced-label">advanced</summary>
-    <div class="advanced" id="advanced">
-      <div class="labeled-input">
-        <label for="iv">random initialization vector</label>
+  <details class="mb-6 group">
+    <summary id="advanced-label" class="cursor-pointer text-sky-500 font-semibold uppercase tracking-wide text-sm mb-4 select-none list-none hover:text-sky-600 transition-colors flex items-center gap-2">
+      <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      nâng cao
+    </summary>
+    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-4" id="advanced">
+      <div class="flex items-center justify-between">
+        <label for="iv" class="text-sm font-medium text-slate-700 cursor-pointer select-none">vector khởi tạo ngẫu nhiên</label>
         <input
           type="checkbox"
           id="iv"
           bind:checked={useRandomIv}
           onclick={onIvCheck}
+          class="w-5 h-5 text-sky-500 bg-white border-slate-300 rounded focus:ring-sky-500 focus:ring-2 cursor-pointer"
         />
       </div>
-      <div class="labeled-input">
-        <label for="salt">random salt</label>
-        <input type="checkbox" id="salt" bind:checked={useRandomSalt} />
+      <div class="flex items-center justify-between">
+        <label for="salt" class="text-sm font-medium text-slate-700 cursor-pointer select-none">salt ngẫu nhiên</label>
+        <input type="checkbox" id="salt" bind:checked={useRandomSalt} class="w-5 h-5 text-sky-500 bg-white border-slate-300 rounded focus:ring-sky-500 focus:ring-2 cursor-pointer" />
       </div>
     </div>
   </details>
-  <button id="encrypt" onclick={onEncrypt}>Encrypt</button>
+  <button id="encrypt" onclick={onEncrypt} class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-md shadow-sky-500/20 hover:shadow-lg hover:-translate-y-0.5">Mã hóa</button>
 </div>
 
-<hr />
+<hr class="border-t border-slate-200 my-8" />
 
 <!-- Output area -->
-<div class="output">
-  <label for="output">output</label>
-  <input type="text" id="output" readonly bind:value={outputUrl} />
-  <button id="copy" onclick={onCopy}>Copy</button>
-  <a href="/hidden" id="bookmark" target="_blank"
-    ><button>Create Hidden Bookmark</button></a
-  >
-  <a href={outputUrl || "#"} id="open" target="_blank"
-    ><button>Open in New Tab</button></a
-  >
-  <!-- Special incantation to make TinyURL work -->
-  <!-- TODO: Re-enable if TinyURL unbans this domain -->
-  <!--
-  <form action="https://tinyurl.com/create.php" method="get" target="_blank" style="display: inline;">
-    <input type="hidden" id="source" name="source" value="indexpage" />
-    <input type="hidden" id="tinyurl" name="url" value = "" />
-    <button>Get Shortened Link</button>
-  </form>
-  -->
-  <p class="alert" style="opacity: {copyAlert ? '1' : '0'};">{copyAlertText}</p>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <label for="output" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">đầu ra</label>
+  <input type="text" id="output" readonly bind:value={outputUrl} class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-500 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all font-mono text-sm break-all" />
+  
+  <div class="flex flex-col sm:flex-row gap-3 mb-4">
+    <button id="copy" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all" onclick={onCopy}>Sao chép</button>
+    <a href={outputUrl || "#"} id="open" target="_blank" class="flex-1 block w-full"
+      ><button class="w-full h-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all">Mở trong tab mới</button></a
+    >
+  </div>
+  
+  <p class="text-center text-emerald-500 font-medium transition-opacity duration-300 min-h-[24px]" style="opacity: {copyAlert ? '1' : '0'};">{copyAlertText}</p>
 </div>
-
-<!-- Page footer -->
-<footer>
-  <hr />
-  <p class="copyright">
-    Created by <a href="https://jstrieb.github.io">Jacob Strieb</a>.
-  </p>
-</footer>

@@ -11,7 +11,7 @@
   let statusOpacity = $state(0);
 
   let outputHref = $state("");
-  let outputTitle = $state("No Disguised Bookmark Created Yet");
+  let outputTitle = $state("Chưa tạo dấu trang ẩn nào");
   let outputDisabled = $state(true);
 
   // The huge bookmarklet logic copied directly
@@ -138,7 +138,7 @@ try {
     try {
       hiddenUrl = new URL(hiddenUrlText);
     } catch {
-      error('Hidden URL is not valid. Make sure it includes "https://" too!');
+      error("URL ẩn không hợp lệ. Đảm bảo nó cũng bao gồm 'https://'!");
       return;
     }
 
@@ -146,7 +146,7 @@ try {
     try {
       bookmarkUrl = new URL(bookmarkUrlText);
     } catch {
-      error('Bookmark URL is not valid. Make sure it includes "https://" too!');
+      error("URL dấu trang không hợp lệ. Đảm bảo nó cũng bao gồm 'https://'!");
       return;
     }
 
@@ -157,7 +157,7 @@ try {
       );
     } catch {
       error(
-        'The hidden URL appears corrupted. It must be a password-protected Link Lock URL. <a href="https://jstrieb.github.io/link-lock">Click here to add a password.</a>',
+        'URL ẩn có vẻ bị hỏng. Nó phải là một URL Link Lock được bảo vệ bằng mật khẩu. <a href="https://jstrieb.github.io/link-lock">Nhấn vào đây để thêm mật khẩu.</a>',
       );
       return;
     }
@@ -167,7 +167,7 @@ try {
     outputDisabled = false;
     outputTitle = bookmarkTitle || bookmarkUrl.hostname;
 
-    error("Bookmark created below.");
+    error("Dấu trang được tạo bên dưới.");
 
     setTimeout(() => {
       window.scrollTo({
@@ -198,176 +198,152 @@ try {
       bookmarkUrlText = page.canonicalurl;
       bookmarkTitle = page.title;
     } catch (e) {
-      error("Failed to fetch random link from Wikipedia.");
+      error("Không thể tìm nạp liên kết ngẫu nhiên từ Wikipedia.");
     }
   }
 </script>
 
 <svelte:head>
-  <title>Create Hidden Bookmarks</title>
+  <title>Tạo dấu trang ẩn</title>
 </svelte:head>
 
 <!-- View on GitHub ribbon -->
-<a href="https://github.com/jstrieb/link-lock" target="_blank">
-  <!-- Use public folder path for image -->
-  <img class="ribbon" src="/corner-ribbon-minified.svg" alt="View on GitHub" />
+<a href="https://github.com/jstrieb/link-lock" target="_blank" class="absolute top-0 right-0 opacity-80 hover:opacity-100 transition-opacity">
+  <img src="/corner-ribbon-minified.svg" alt="Xem trên GitHub" class="w-24 h-24" />
 </a>
 
-<noscript>
-  <div class="red-border">
-    <p>
-      If you are seeing this, it means that you have JavaScript disabled. Please
-      enable JavaScript to access the locked link.
-    </p>
+<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 
-    <p>
-      This application is entirely programmed in JavaScript. This was done
-      intentionally, so that all encryption and decryption happens client-side.
-      This means the code runs as a distributed application, relying only on
-      GitHub Pages for infrastructure. It also means that no data about locked
-      links is ever stored on a server. The code is designed to be auditable so
-      users can investigate what is happening behind the scenes.
-    </p>
+<h1 class="text-3xl font-bold text-slate-900 text-center mb-6">Tạo dấu trang ẩn</h1>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8 text-slate-600 space-y-4">
+  <p>
+    Có thể bảo vệ dấu trang bằng mật khẩu bằng cách sử dụng <a
+      href="https://jstrieb.github.io/link-lock"
+      target="_blank" class="text-sky-500 hover:text-sky-600 hover:underline">Link Lock</a
+    >, nhưng một liên kết cần mật khẩu có thể trông đáng ngờ đối với người khác khi nhìn thấy nó. Dấu trang ẩn giải quyết vấn đề này.
+  </p>
+  <p>
+    Các dấu trang ẩn được ngụy trang giống hệt các dấu trang bình thường, với một ngoại lệ: nhấp vào chúng theo đúng thứ tự sẽ mở ra một liên kết ẩn. <b class="font-semibold text-slate-800"
+      >Để mở liên kết ẩn, trước tiên hãy nhấp vào dấu trang ngụy trang, và sau đó nhấp vào dấu trang giải mã.</b
+    > Cùng một dấu trang giải mã hoạt động cho tất cả các dấu trang được ngụy trang.
+  </p>
+  <p>
+    Đọc thêm về cách hoạt động của dấu trang ẩn <a
+      target="_blank"
+      href="https://jstrieb.github.io/projects/hidden-bookmarks/" class="text-sky-500 hover:text-sky-600 hover:underline">tại đây</a
+    >.
+  </p>
+</div>
 
-    <p>
-      If you still want to run the application, I encourage you to clone the <a
-        href="https://github.com/jstrieb/link-lock">source code on GitHub</a
-      >. That way you can disable JavaScript only for trusted files on your
-      local machine.
-    </p>
-  </div>
-</noscript>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <p class="font-semibold text-slate-800 mb-4">Dưới đây là cách tạo dấu trang ẩn:</p>
+  <ol class="list-decimal list-inside text-slate-600 space-y-3">
+    <li>
+      <a href="https://jstrieb.github.io/link-lock" class="text-sky-500 hover:text-sky-600 hover:underline"
+        >Thêm mật khẩu vào liên kết ẩn</a
+      > nếu bạn chưa làm như vậy.
+    </li>
+    <li>
+      Kéo dấu trang "giải mã" dưới đây vào thanh dấu trang của bạn.
 
-<h1>Create Hidden Bookmarks</h1>
-<p>
-  It is possible to protect bookmarks with a password using <a
-    href="https://jstrieb.github.io/link-lock"
-    target="_blank">Link Lock</a
-  >, but a link that needs a password may appear suspicious to someone else
-  seeing it. Hidden bookmarks solve this problem.
-</p>
-<p>
-  Hidden bookmarks are disguised to be identical to normal bookmarks, with one
-  exception: clicking them in the right order will open a hidden link. <b
-    >To open the hidden link, click the disguised bookmark first, and then click
-    the decrypt bookmark next.</b
-  > The same decrypt bookmark works for all disguised bookmarks.
-</p>
-<p>
-  Read more about how hidden bookmarks work <a
-    target="_blank"
-    href="https://jstrieb.github.io/projects/hidden-bookmarks/">here</a
-  >.
-</p>
+      <ul class="list-disc list-inside ml-6 mt-2 mb-4 space-y-2">
+        <li>
+          Nhấp vào dấu trang giải mã sẽ đi đến <code class="bg-slate-100 text-sky-600 px-1.5 py-0.5 rounded text-sm font-mono"
+            >{decryptBookmarkDisguise}</code
+          > trừ khi trang hiện tại là một liên kết được ngụy trang. Sử dụng các tùy chọn "nâng cao" để nó đi đến một nơi khác.
+        </li>
+      </ul>
 
-<p>Here is how to create hidden bookmarks:</p>
-<ol>
-  <li>
-    <a href="https://jstrieb.github.io/link-lock"
-      >Add a password to the hidden link</a
-    > if you have not done so already.
-  </li>
-  <li>
-    Drag the "decrypt" bookmark below to your bookmarks bar.
-
-    <ul>
-      <li style="margin-bottom: 0.5em;">
-        Clicking the decrypt bookmark goes to <code
-          >{decryptBookmarkDisguise}</code
-        > unless the current page is a disguised link. Use the "advanced" options
-        to have it go somewhere else instead.
-      </li>
-    </ul>
-
-    <details>
-      <summary id="advanced-label" style="margin-top: 0em;">advanced</summary>
-      <div class="advanced" id="advanced">
-        <label for="decrypt-bookmark-disguise"
-          >decoy location for decrypt bookmark</label
-        >
-        <div class="inline-button-container">
-          <input
-            type="text"
-            id="decrypt-bookmark-disguise"
-            bind:value={decryptBookmarkDisguise}
-          />
+      <details class="mb-4 group">
+        <summary class="cursor-pointer text-sky-500 font-semibold uppercase tracking-wide text-sm mb-4 select-none list-none hover:text-sky-600 transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          nâng cao
+        </summary>
+        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-4">
+          <label for="decrypt-bookmark-disguise" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide"
+            >vị trí mồi nhử cho dấu trang giải mã</label
+          >
+          <div class="flex">
+            <input
+              type="text"
+              id="decrypt-bookmark-disguise"
+              bind:value={decryptBookmarkDisguise}
+              class="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+            />
+          </div>
         </div>
-      </div>
-    </details>
+      </details>
 
-    <p>
-      <a
-        class="bookmark"
-        id="decrypt-bookmark"
-        onclick={(e) => e.preventDefault()}
-        href={decryptBookmarklet}>Decrypt</a
-      >
-    </p>
-  </li>
-  <li>
-    It may be a good idea to rename the decrypt bookmark to "Gmail" by right
-    clicking, and either clicking "Edit" or "Properties."
-  </li>
-  <li>
-    Fill in the hidden URL below (if it is not already filled in). Then, fill in
-    the disguised bookmark name and link.
-    <ul>
-      <li>
-        There is a button to generate random disguise links if you do not want
-        to pick your own.
-      </li>
-    </ul>
-  </li>
-  <li>
-    Press the button to create the bookmark. Once created, drag the disguised
-    bookmark to your bookmarks bar.
-  </li>
-</ol>
+      <p class="mb-4">
+        <a
+          class="inline-block px-5 py-2.5 border-2 border-sky-500 text-sky-500 font-semibold rounded-lg hover:bg-sky-500 hover:text-white transition-all text-center w-full sm:w-auto"
+          id="decrypt-bookmark"
+          onclick={(e) => e.preventDefault()}
+          href={decryptBookmarklet}>Giải mã</a
+        >
+      </p>
+    </li>
+    <li>
+      Có thể là một ý tưởng hay khi đổi tên dấu trang giải mã thành "Gmail" bằng cách nhấp chuột phải và nhấp vào "Chỉnh sửa" hoặc "Thuộc tính".
+    </li>
+    <li>
+      Điền vào URL ẩn dưới đây (nếu nó chưa được điền). Sau đó, điền vào tên và liên kết dấu trang được ngụy trang.
+      <ul class="list-disc list-inside ml-6 mt-2 space-y-2">
+        <li>
+          Có một nút để tạo liên kết ngụy trang ngẫu nhiên nếu bạn không muốn tự chọn.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Nhấn nút để tạo dấu trang. Khi đã tạo, kéo dấu trang được ngụy trang vào thanh dấu trang của bạn.
+    </li>
+  </ol>
+</div>
 
-<hr />
+<hr class="border-t border-slate-200 my-8" />
 
-<div class="form">
-  <label for="encrypted-url">hidden url</label>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <label for="encrypted-url" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">url ẩn</label>
   <input
     type="url"
     id="encrypted-url"
     bind:value={hiddenUrlText}
     oninput={() => (statusOpacity = 0)}
+    class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
   />
-  <label for="bookmark-title">disguised bookmark name</label>
-  <input type="text" id="bookmark-title" bind:value={bookmarkTitle} />
-  <label for="bookmark-url">bookmark disguise url</label>
-  <input type="url" id="bookmark-url" bind:value={bookmarkUrlText} required />
-  <button onclick={onHide}>Create Disguised Bookmark</button>
-  <button onclick={randomLink}>Use A Random Disguise Link</button>
-  <p class="alert" style="opacity: {statusOpacity}">
+  <label for="bookmark-title" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">tên dấu trang ngụy trang</label>
+  <input type="text" id="bookmark-title" bind:value={bookmarkTitle} class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+  <label for="bookmark-url" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">url ngụy trang dấu trang</label>
+  <input type="url" id="bookmark-url" bind:value={bookmarkUrlText} required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+  <button onclick={onHide} class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-md shadow-sky-500/20 hover:shadow-lg hover:-translate-y-0.5 mb-3">Tạo dấu trang ngụy trang</button>
+  <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all" onclick={randomLink}>Sử dụng một liên kết ngụy trang ngẫu nhiên</button>
+  <p class="text-center text-red-500 font-medium transition-opacity duration-300 mt-4 min-h-[24px]" style="opacity: {statusOpacity}">
     {@html statusText || "INVISIBLE"}
   </p>
 </div>
 
-<hr />
+<hr class="border-t border-slate-200 my-8" />
 
 <!-- Output area -->
-<div class="output">
-  <label for="output" style="margin-bottom: 1em;">output</label>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <label for="output" class="block text-sm font-medium text-slate-500 mb-4 uppercase tracking-wide">đầu ra</label>
   <a
-    class="bookmark"
+    class="block w-full text-center px-5 py-3 border-2 border-sky-500 text-sky-500 font-semibold rounded-lg hover:bg-sky-500 hover:text-white transition-all mb-5 truncate aria-[disabled=true]:border-slate-300 aria-[disabled=true]:text-slate-400 aria-[disabled=true]:hover:bg-transparent aria-[disabled=true]:cursor-not-allowed"
     href={outputHref || "#"}
     onclick={(e) => e.preventDefault()}
     aria-disabled={outputDisabled}
     id="output">{outputTitle}</a
   >
-  <p>Drag the disguised bookmark above to the bookmarks bar.</p>
-  <p>
-    To access the hidden link, click the disguised bookmark, then the decrypt
-    bookmark (which may have been renamed to "Gmail").
+  <p class="text-slate-600 mb-2">Kéo dấu trang ngụy trang phía trên vào thanh dấu trang.</p>
+  <p class="text-slate-600">
+    Để truy cập liên kết ẩn, hãy nhấp vào dấu trang ngụy trang, sau đó nhấp vào dấu trang giải mã (có thể đã được đổi tên thành "Gmail").
   </p>
 </div>
 
 <!-- Page footer -->
-<footer>
-  <hr />
+<footer class="text-center text-slate-500 text-sm mt-10 mb-6">
+  <hr class="border-t border-slate-200 mb-6" />
   <p class="copyright">
-    Created by <a href="https://jstrieb.github.io">Jacob Strieb</a>.
+    Được tạo bởi <a href="https://jstrieb.github.io" class="text-sky-500 hover:text-sky-600 hover:underline">Jacob Strieb</a>.
   </p>
 </footer>

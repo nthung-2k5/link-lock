@@ -28,7 +28,7 @@
       url = new URL(urlText);
     } catch {
       error(
-        'Entered text is not a valid URL. Make sure it includes "https://" too!',
+        "Văn bản đã nhập không phải là một URL hợp lệ. Đảm bảo nó cũng bao gồm 'https://'!",
       );
       return;
     }
@@ -41,19 +41,19 @@
         ),
       );
     } catch {
-      error("The link appears corrupted.");
+      error("Liên kết có vẻ bị hỏng.");
       return;
     }
 
     if (!("v" in params && "e" in params)) {
       error(
-        "The link appears corrupted. The encoded URL is missing necessary parameters.",
+        "Liên kết bị hỏng. URL mã hóa thiếu các thông số cần thiết.",
       );
       return;
     }
 
     if (!(params["v"] in apiVersions)) {
-      error("Unsupported API version. The link may be corrupted.");
+      error("Phiên bản API không được hỗ trợ. Liên kết có thể bị hỏng.");
       return;
     }
 
@@ -68,7 +68,7 @@
       saltData = "s" in params ? Uint8Array.fromBase64(params["s"]) : null;
       ivData = "i" in params ? Uint8Array.fromBase64(params["i"]) : null;
     } catch {
-      error("The link appears corrupted.");
+      error("Liên kết có vẻ bị hỏng.");
       return;
     }
 
@@ -76,17 +76,17 @@
     try {
       decrypted = await api.decrypt(encryptedData, password, saltData, ivData);
     } catch {
-      error("Incorrect password!");
+      error("Mật khẩu không chính xác!");
       return;
     }
 
     decryptedUrl = decrypted;
-    error("Decrypted!");
+    error("Đã giải mã!");
   }
 
   function onCopy() {
     navigator.clipboard.writeText(decryptedUrl).then(() => {
-      copyAlertText = `Copied ${decryptedUrl.length} characters`;
+      copyAlertText = `Đã sao chép ${decryptedUrl.length} ký tự`;
       copyAlertOpacity = 1;
       setTimeout(() => {
         copyAlertOpacity = 0;
@@ -96,98 +96,66 @@
 </script>
 
 <svelte:head>
-  <title>Decrypt Link Lock URLs</title>
+  <title>Giải mã URL Link Lock</title>
 </svelte:head>
 
-<a href="https://github.com/jstrieb/link-lock" target="_blank">
-  <img class="ribbon" src="/corner-ribbon-minified.svg" alt="View on GitHub" />
-</a>
+<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 
-<noscript>
-  <div class="red-border">
-    <p>
-      If you are seeing this, it means that you have JavaScript disabled. Please
-      enable JavaScript to access the locked link.
-    </p>
+<h1 class="text-3xl font-bold text-slate-900 text-center mb-6">Giải mã URL Link Lock</h1>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8 text-slate-600 space-y-4">
+  <p>
+    Ứng dụng này dùng để giải mã các URL <a
+      href="https://github.com/jstrieb/link-lock"
+      target="_blank" class="text-sky-500 hover:text-sky-600 hover:underline">Link Lock</a
+    >
+    mà không tự động chuyển hướng. Điều này hữu ích nếu bạn không tin tưởng nguồn gốc của một URL được mã hóa. Nó cũng hữu ích nếu URL sử dụng một giao thức bị chặn như <code class="bg-slate-100 text-sky-600 px-1.5 py-0.5 rounded text-sm font-mono">javascript:</code>, chẳng hạn.
+  </p>
 
-    <p>
-      This application is entirely programmed in JavaScript. This was done
-      intentionally, so that all encryption and decryption happens client-side.
-      This means the code runs as a distributed application, relying only on
-      GitHub Pages for infrastructure. It also means that no data about locked
-      links is ever stored on a server. The code is designed to be auditable so
-      users can investigate what is happening behind the scenes.
-    </p>
+  <p>
+    Trang này cũng hữu ích nếu bạn cho rằng mình đã nhận được một liên kết bị khóa, nhưng nó sử dụng một tên miền khác, thay vì <code class="bg-slate-100 text-sky-600 px-1.5 py-0.5 rounded text-sm font-mono">jstrieb.github.io</code>. Điều này có thể được thực hiện như một phương tiện để
+    <a
+      target="_blank"
+      href="https://github.com/jstrieb/link-lock/#evading-censorship"
+      class="text-sky-500 hover:text-sky-600 hover:underline">tránh kiểm duyệt</a
+    >.
+  </p>
+</div>
 
-    <p>
-      If you still want to run the application, I encourage you to clone the <a
-        href="https://github.com/jstrieb/link-lock">source code on GitHub</a
-      >. That way you can disable JavaScript only for trusted files on your
-      local machine.
-    </p>
-  </div>
-</noscript>
+<hr class="border-t border-slate-200 my-8" />
 
-<h1>Decrypt Link Lock URLs</h1>
-<p>
-  This application is for decrypting <a
-    href="https://github.com/jstrieb/link-lock"
-    target="_blank">Link Lock</a
-  >
-  URLs without automatically redirecting. This is useful if you do not trust the
-  source of an encrypted URL. It is also useful if the URL uses a blocked protocol
-  like <code>javascript:</code>, for example.
-</p>
-
-<p>
-  This page is also useful if you think you have received a locked link, but it
-  uses another domain, instead of <code>jstrieb.github.io</code>. This may be
-  done as a means to
-  <a
-    target="_blank"
-    href="https://github.com/jstrieb/link-lock/#evading-censorship"
-    >evade censorship</a
-  >.
-</p>
-
-<hr />
-
-<div class="form">
-  <label for="encrypted-url">encrypted url</label>
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <label for="encrypted-url" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">url mã hóa</label>
   <input
     type="url"
     id="encrypted-url"
     bind:value={urlText}
     oninput={() => (statusOpacity = 0)}
+    class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
   />
-  <label for="password">password</label>
+  <label for="password" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">mật khẩu</label>
   <!-- svelte-ignore a11y_autofocus -->
-  <input type="password" id="password" bind:value={password} autofocus />
-  <button onclick={onDecrypt}>Decrypt</button>
-  <p class="alert" style="opacity: {statusOpacity}">
+  <input type="password" id="password" bind:value={password} autofocus class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+  <button onclick={onDecrypt} class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-md shadow-sky-500/20 hover:shadow-lg hover:-translate-y-0.5">Giải mã</button>
+  <p class="text-center text-red-500 font-medium transition-opacity duration-300 mt-4 min-h-[24px]" style="opacity: {statusOpacity}">
     {statusText || "INVISIBLE"}
   </p>
 </div>
 
-<hr />
+<hr class="border-t border-slate-200 my-8" />
 
 <!-- Output area -->
-<div class="output">
-  <label for="output">output</label>
-  <input type="text" id="output" readonly bind:value={decryptedUrl} />
-  <button id="copy" onclick={onCopy}>Copy</button>
-  <a href={decryptedUrl || "#"} id="open" target="_blank"
-    ><button>Open in New Tab</button></a
-  >
-  <p class="alert" id="copy-alert" style="opacity: {copyAlertOpacity}">
+<div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8">
+  <label for="output" class="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">đầu ra</label>
+  <input type="text" id="output" readonly bind:value={decryptedUrl} class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-500 mb-5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all font-mono text-sm break-all" />
+  
+  <div class="flex flex-col sm:flex-row gap-3 mb-4">
+    <button id="copy" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all" onclick={onCopy}>Sao chép</button>
+    <a href={decryptedUrl || "#"} id="open" target="_blank" class="flex-1 block w-full"
+      ><button class="w-full h-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg transition-all">Mở trong tab mới</button></a
+    >
+  </div>
+  
+  <p class="text-center text-emerald-500 font-medium transition-opacity duration-300 min-h-[24px]" id="copy-alert" style="opacity: {copyAlertOpacity}">
     {copyAlertText}
   </p>
 </div>
-
-<!-- Page footer -->
-<footer>
-  <hr />
-  <p class="copyright">
-    Created by <a href="https://jstrieb.github.io">Jacob Strieb</a>.
-  </p>
-</footer>
