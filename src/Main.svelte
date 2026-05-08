@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { apiVersions, decoder, type ApiVersion } from "./api";
   import { navigate, p, route } from "./router";
+  import logo from "./assets/logo.png";
 
   let errorText = $state("");
   let hint = $state("");
@@ -111,7 +112,7 @@
   }
 </script>
 
-<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
+<img src={logo} alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 {#if !errorText}
   <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
     <p class="text-slate-600 mb-4 text-center">

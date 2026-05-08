@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LATEST_API_VERSION, apiVersions, encoder } from "../api";
   import { p } from "../router";
+  import logo from "../assets/logo.png";
 
   let url = $state("");
   let hint = $state("aow.vn");
@@ -146,7 +147,7 @@
   <title>AowVN Kaizo</title>
 </svelte:head>
 
-<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
+<img src={logo} alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 
 {#if errorText}
   <div class="bg-white border border-red-200 rounded-2xl p-6 shadow-sm mb-6">

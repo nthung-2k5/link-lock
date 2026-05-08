@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { apiVersions, decoder } from "../api";
   import { p, route } from "../router";
+  import logo from "../assets/logo.png";
 
   let urlText = $state("");
   let password = $state("");
@@ -99,7 +100,7 @@
   <title>Giải mã URL Link Lock</title>
 </svelte:head>
 
-<img src="/logo.png" alt="Logo" class="mx-auto w-32 h-auto mb-6" />
+<img src={logo} alt="Logo" class="mx-auto w-32 h-auto mb-6" />
 
 <h1 class="text-3xl font-bold text-slate-900 text-center mb-6">Giải mã URL Link Lock</h1>
 <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm mb-8 text-slate-600 space-y-4">
