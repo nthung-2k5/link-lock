@@ -4,7 +4,7 @@
   import logo from "../assets/logo.png";
 
   let url = $state("");
-  let hint = $state("aow.vn");
+  let hint = $state("Nhập aow.vn");
   let password = $state("aow.vn");
   let confirmPassword = $state("aow.vn");
   let useRandomIv = $state(true);

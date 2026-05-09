@@ -13,8 +13,9 @@
   let copyAlertOpacity = $state(0);
 
   onMount(() => {
-    if (route.hash.length > 0) {
-      urlText = window.location.origin + p("/", { hash: route.hash });
+    const params = route.getParams('/:id');
+    if (params.id) {
+      urlText = window.location.origin + p("/:id", { params: { id: params.id } });
     }
   });
 
