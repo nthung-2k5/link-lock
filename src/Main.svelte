@@ -3,6 +3,7 @@
   import { apiVersions, decoder, type ApiVersion } from "./api";
   import { navigate, p, route } from "./router";
   import logo from "./assets/logo.png";
+  import ShopeeBanner from "./ShopeeBanner.svelte";
 
   let errorText = $state("");
   let hint = $state("");
@@ -162,3 +163,5 @@
     </div>
   </div>
 {/if}
+
+<ShopeeBanner />
