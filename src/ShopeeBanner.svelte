@@ -10,51 +10,7 @@
   let targetHref = $state("");
   let closing = $state(false);
 
-  const images = [
-    "https://i45.servimg.com/u/f45/19/58/16/37/aowvnd12.png",
-    "https://i45.servimg.com/u/f45/19/58/16/37/aowvnd11.png",
-    "https://i45.servimg.com/u/f45/19/58/16/37/aowvnd10.png",
-    "https://i45.servimg.com/u/f45/19/58/16/37/aowvnd13.png",
-    "https://i45.servimg.com/u/f45/19/58/16/37/aowvnd14.png",
-  ];
-  const links = [
-    "https://s.shopee.vn/4frtYdd9Bl", "https://s.shopee.vn/5AoA9YbFAs", "https://s.shopee.vn/50UjxFbsVr",
-    "https://s.shopee.vn/2qQFNGk7uS", "https://s.shopee.vn/2g6pAxklFR", "https://s.shopee.vn/3B35lsirEY",
-    "https://s.shopee.vn/30jfZZjUZX", "https://s.shopee.vn/3VfwAUhaYe", "https://s.shopee.vn/3LMVyBiDtd",
-    "https://s.shopee.vn/3qImZ6gJsk", "https://s.shopee.vn/3fzMMngxDj", "https://s.shopee.vn/6fcxwJVX8K",
-    "https://s.shopee.vn/6pwO8cUtnN", "https://s.shopee.vn/70FoKvUGSQ", "https://s.shopee.vn/7AZEXETd7T",
-    "https://s.shopee.vn/7KsejXSzmW", "https://s.shopee.vn/7VC4vqSMRZ", "https://s.shopee.vn/7fVV89Rj6c",
-    "https://s.shopee.vn/7povKSR5lf", "https://s.shopee.vn/5L7aLrabqC", "https://s.shopee.vn/5VR0YAZyVF",
-    "https://s.shopee.vn/5fkQkTZLAI", "https://s.shopee.vn/5q3qwmYhpL", "https://s.shopee.vn/60NH95Y4UO",
-    "https://s.shopee.vn/6AghLOXR9R", "https://s.shopee.vn/6L07XhWnoU", "https://s.shopee.vn/6VJXk0WATX",
-    "https://s.shopee.vn/9Kdj7DLNj6", "https://s.shopee.vn/9Ux9JWKkO9", "https://s.shopee.vn/9fGZVpK73C",
-    "https://s.shopee.vn/9pZzi8JTiF", "https://s.shopee.vn/9ztPuRIqNI", "https://s.shopee.vn/AACq6kID2L",
-    "https://s.shopee.vn/AKWGJ3HZhO", "https://s.shopee.vn/AUpgVMGwMR", "https://s.shopee.vn/808LWlQSQy",
-    "https://s.shopee.vn/8ARlj4Pp61", "https://s.shopee.vn/8KlBvNPBl4", "https://s.shopee.vn/8V4c7gOYQ7",
-    "https://s.shopee.vn/8fO2JzNv5A", "https://s.shopee.vn/8phSWINHkD", "https://s.shopee.vn/900sibMePG",
-    "https://s.shopee.vn/9AKIuuM14J", "https://s.shopee.vn/1LbRaVppxo", "https://s.shopee.vn/1VurmopCcr",
-    "https://s.shopee.vn/1gEHz7oZHu", "https://s.shopee.vn/1qXiBQnvwx", "https://s.shopee.vn/20r8NjnIc0",
-    "https://s.shopee.vn/2BAYa2mfH3", "https://s.shopee.vn/2LTymLm1w6", "https://s.shopee.vn/2VnOyelOb9",
-    "https://s.shopee.vn/16403uufg",  "https://s.shopee.vn/BPUCMuHKj",  "https://s.shopee.vn/LiuOftdzm",
-    "https://s.shopee.vn/W2Kayt0ep",  "https://s.shopee.vn/gLknHsNJs",  "https://s.shopee.vn/qfAzarjyv",
-    "https://s.shopee.vn/10ybBtr6dy", "https://s.shopee.vn/1BI1OCqTJ1", "https://s.shopee.vn/40cClPfgYa",
-    "https://s.shopee.vn/4Avcxif3Dd", "https://s.shopee.vn/4LF3A1ePsg", "https://s.shopee.vn/4VYTMKdmXj",
-    "https://s.shopee.vn/4frtYdd9Cm", "https://s.shopee.vn/4qBJkwcVrp", "https://s.shopee.vn/50UjxFbsWs",
-    "https://s.shopee.vn/5AoA9YbFBv", "https://s.shopee.vn/2g6pAxklGS", "https://s.shopee.vn/2qQFNGk7vV",
-    "https://s.shopee.vn/30jfZZjUaY", "https://s.shopee.vn/3B35lsirFb", "https://s.shopee.vn/3LMVyBiDue",
-    "https://s.shopee.vn/3VfwAUhaZh", "https://s.shopee.vn/3fzMMngxEk", "https://s.shopee.vn/3qImZ6gJtn",
-    "https://s.shopee.vn/7AZEXETd8S", "https://s.shopee.vn/70FoKvUGTR", "https://s.shopee.vn/6pwO8cUtoQ",
-    "https://s.shopee.vn/6fcxwJVX9P", "https://s.shopee.vn/7povKSR5me", "https://s.shopee.vn/7fVV89Rj7d",
-    "https://s.shopee.vn/7VC4vqSMSc", "https://s.shopee.vn/7KsejXSznb", "https://s.shopee.vn/5q3qwmYhqK",
-    "https://s.shopee.vn/5fkQkTZLBJ", "https://s.shopee.vn/5VR0YAZyWI", "https://s.shopee.vn/5L7aLrabrH",
-    "https://s.shopee.vn/6VJXk0WAUW", "https://s.shopee.vn/6L07XhWnpV", "https://s.shopee.vn/6AghLOXRAU",
-    "https://s.shopee.vn/60NH95Y4VT", "https://s.shopee.vn/9pZzi8JTjE", "https://s.shopee.vn/9fGZVpK74D",
-    "https://s.shopee.vn/9Ux9JWKkPC", "https://s.shopee.vn/9Kdj7DLNkB", "https://s.shopee.vn/AUpgVMGwNQ",
-    "https://s.shopee.vn/AKWGJ3HZiP", "https://s.shopee.vn/AACq6kID3O", "https://s.shopee.vn/9ztPuRIqON",
-    "https://s.shopee.vn/8V4c7gOYR6"
-  ];
-
-  onMount(() => {
+  onMount(async () => {
     const now = Date.now();
     let ts: string | null = null;
     try {
@@ -68,11 +24,21 @@
       return; 
     }
 
+    const res = await fetch("https://gist.githubusercontent.com/nthung-2k5/08ba18f886884d0b3ad7a979d9ac9aef/raw/ad.json");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch ad data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    
+    if (!data.images || !data.links || data.images.length === 0 || data.links.length === 0) {
+      throw new Error("Invalid ad data: images or links are missing or empty");
+    }
+
     dismissed = false;
 
     const pick = (a: string[]) => a[(Math.random() * a.length) | 0];
-    targetImg = pick(images);
-    targetHref = pick(links);
+    targetImg = pick(data.images);
+    targetHref = pick(data.links);
 
     // Show modal directly after mounting
     setTimeout(() => {
@@ -88,7 +54,7 @@
       "shp_inline_ts=" +
       encodeURIComponent(String(t)) +
       "; max-age=" +
-      HIDE_MINUTES * 10 +
+      HIDE_MINUTES * 60 +
       "; path=/; SameSite=Lax";
   }
 
